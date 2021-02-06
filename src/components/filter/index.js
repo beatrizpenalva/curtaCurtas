@@ -89,10 +89,10 @@ export const createMenuFilter = () => {
     printFilmsWithAllFilters();
   });
 
-  // const filterByYear = filterContent.querySelector('#Year');
-  // filterByYear.addEventListener('change', () => {
-  //   printFilmsWithAllFilters();
-  // });
+  const filterByYear = filterContent.querySelector('#Year');
+  filterByYear.addEventListener('change', () => {
+    printFilmsWithAllFilters();
+  });
 
   // const filterByRunTime = filterContent.querySelector('#Runtime');
   // filterByRunTime.addEventListener('change', () => {
@@ -118,7 +118,8 @@ export const createMenuFilter = () => {
       const catalogue = catalogueArray;
       const filteredByCountry = filterData(catalogue, "Country", filterByCountry.value);
       console.log(filteredByCountry)
-      // const filteredByYear = filterData(filteredByCountry, "Year", filterByYear.value);
+      const filteredByYear = filterData(filteredByCountry, "Year", filterByYear.value);
+      console.log(filteredByYear)
       // const filteredByRuntime = filterData(filteredByYear, "Runtime", filterByRunTime.value);
       // const filteredByimdbRating = filterData(filteredByRuntime, "imdbRating", filterByImdb.value);
 
