@@ -1,5 +1,5 @@
 import { films } from '../../pages/home/mock.js'
-// import { printFilms, getFilms } from '../../pages/home/index.js'
+import { printFilms } from '../../pages/home/index.js'
 
 let catalogueArray = []
 
@@ -94,15 +94,15 @@ export const createMenuFilter = () => {
     printFilmsWithAllFilters();
   });
 
-  // const filterByRunTime = filterContent.querySelector('#Runtime');
-  // filterByRunTime.addEventListener('change', () => {
-  //   printFilmsWithAllFilters();
-  // });
+  const filterByRunTime = filterContent.querySelector('#Runtime');
+  filterByRunTime.addEventListener('change', () => {
+    printFilmsWithAllFilters();
+  });
 
-  // const filterByImdb = filterContent.querySelector('#imdbRating');
-  // filterByImdb.addEventListener('change', () => {
-  //   printFilmsWithAllFilters();
-  // });
+  const filterByImdb = filterContent.querySelector('#imdbRating');
+  filterByImdb.addEventListener('change', () => {
+    printFilmsWithAllFilters();
+  });
 
   // // const filterByGenre = filterContent.querySelector('#genre');
   // // filterByGenre.addEventListener('change', () => {
@@ -117,15 +117,13 @@ export const createMenuFilter = () => {
   function printFilmsWithAllFilters() {
       const catalogue = catalogueArray;
       const filteredByCountry = filterData(catalogue, "Country", filterByCountry.value);
-      console.log(filteredByCountry)
       const filteredByYear = filterData(filteredByCountry, "Year", filterByYear.value);
-      console.log(filteredByYear)
-      // const filteredByRuntime = filterData(filteredByYear, "Runtime", filterByRunTime.value);
-      // const filteredByimdbRating = filterData(filteredByRuntime, "imdbRating", filterByImdb.value);
+      const filteredByRuntime = filterData(filteredByYear, "Runtime", filterByRunTime.value);
+      const filteredByimdbRating = filterData(filteredByRuntime, "imdbRating", filterByImdb.value);
 
-      // let resultAllFilters = filteredByimdbRating;
+      let resultAllFilters = filteredByimdbRating;
 
-      // printFilms(resultAllFilters);
+      printFilms(resultAllFilters);
 
       //mandar printar, juntar com o sort, resolver por gênero
   }
