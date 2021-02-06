@@ -1,6 +1,19 @@
 import { films } from '../../pages/home/mock.js'
 // import { printFilms, getFilms } from '../../pages/home/index.js'
 
+let catalogueArray = []
+
+const getCatalogue = async () => {
+  for (const item of films) {
+    await fetch(`https://www.omdbapi.com/?t=${item.title}&apikey=ce12da02`)
+      .then((response) => response.json())
+      .then((json) => {
+        catalogueArray.push(json);
+      });
+  }
+}
+getCatalogue();
+
 export const createMenuFilter = () => {
   const filterContent = document.createElement('section');
   filterContent.classList.add('conteudo-section');
@@ -102,7 +115,7 @@ export const createMenuFilter = () => {
   // // });
 
   function printFilmsWithAllFilters() {
-      const catalogue = creatArrayCatalogue();
+      const catalogue = catalogueArray;
       const filteredByCountry = filterData(catalogue, "Country", filterByCountry.value);
       console.log(filteredByCountry)
       // const filteredByYear = filterData(filteredByCountry, "Year", filterByYear.value);
@@ -117,9 +130,6 @@ export const createMenuFilter = () => {
   }
 
   const filterData = (dataBase, type, condition) => {
-    console.log(dataBase)
-    console.log(type)
-    console.log(condition)
     const filterResult = dataBase.filter((item) => item[type] === condition);
     return filterResult;
   };
@@ -140,23 +150,6 @@ export const createMenuFilter = () => {
   // };
 
   return filterContent;
-}
-
-const getCatalogue = async () => {
-  for (const item of films) {
-    await fetch(`https://www.omdbapi.com/?t=${item.title}&apikey=ce12da02`)
-      .then((response) => response.json())
-      .then((json) => {
-        creatArrayCatalogue(json);
-      });
-  }
-}
-getCatalogue();
-
-const creatArrayCatalogue = (json) => {
-  const database = [];
-  database.push(json);
-  return database;
 }
 
 // const sortByMostRecent = async () => {
