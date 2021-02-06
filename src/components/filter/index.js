@@ -1,5 +1,5 @@
 import { films } from '../../pages/home/mock.js'
-import { printFilms, getFilms } from '../../pages/home/index.js'
+// import { printFilms, getFilms } from '../../pages/home/index.js'
 
 export const createMenuFilter = () => {
   const filterContent = document.createElement('section');
@@ -49,15 +49,12 @@ export const createMenuFilter = () => {
         </select>
       </div>
     
-
       <div class="score">
         <input type="range" min= "0" max= "10" step="0.1" id="imdbRating">
         <label for="imdb"> Imdb Score </label>
         <p id="value-area"></p>
       </div>
 
-
-      
       <div class="year-movie">
         <input type="range" min="1900" max="2021"  step="1" id="Year">
         <label for="year"> Year: <span class="filter-subtitle"> 1900 - 2021 </span></label>
@@ -76,57 +73,123 @@ export const createMenuFilter = () => {
 
   const filterByCountry = filterContent.querySelector('#country');
   filterByCountry.addEventListener('change', () => {
-    document.querySelector('#catalogue').innerHTML = ' ';
-    const chooseFilter = filterByCountry.value;
-    filterData("Country", chooseFilter);
+    printFilmsWithAllFilters();
   });
 
-  const filterByYear = filterContent.querySelector('#Year');
-  filterByYear.addEventListener('change', () => {
-    document.querySelector('#catalogue').innerHTML = ' ';
-    filterData("Year", filterByYear.value)
-  });
+  // const filterByYear = filterContent.querySelector('#Year');
+  // filterByYear.addEventListener('change', () => {
+  //   printFilmsWithAllFilters();
+  // });
 
-    const filterByRunTime = filterContent.querySelector('#Runtime');
-    filterByRunTime.addEventListener('change', () => {
-      document.querySelector('#catalogue').innerHTML = ' ';
-      const timeArea = document.querySelector('#time-area');
-      timeArea.innerHTML = `${filterByRunTime.value} min`;
-      const getCondition = `${filterByRunTime.value} min`;
-      filterData("Runtime", getCondition)
-    });
+  // const filterByRunTime = filterContent.querySelector('#Runtime');
+  // filterByRunTime.addEventListener('change', () => {
+  //   printFilmsWithAllFilters();
+  // });
 
-  const filterByImdb = filterContent.querySelector('#imdbRating');
-  filterByImdb.addEventListener('change', () => {
-    document.querySelector('#catalogue').innerHTML = ' ';
-    filterData("imdbRating", filterByImdb.value)
-  });
+  // const filterByImdb = filterContent.querySelector('#imdbRating');
+  // filterByImdb.addEventListener('change', () => {
+  //   printFilmsWithAllFilters();
+  // });
 
-  const filterByGenre = filterContent.querySelector('#genre');
-  filterByGenre.addEventListener('change', () => {
-      document.querySelector('#catalogue').innerHTML = ' ';
-      for (const i of films) {
-        if (filterByGenre.value === i.genre) {
-          getFilms(i);
-        }
+  // // const filterByGenre = filterContent.querySelector('#genre');
+  // // filterByGenre.addEventListener('change', () => {
+  // //   document.querySelector('#catalogue').innerHTML = ' ';
+  // //   for (const i of films) {
+  // //     if (filterByGenre.value === i.genre) {
+  // //         getFilms(i);
+  // //     }
+  // //   }
+  // // });
 
-      }
-    });
-    
-  const filterData = (type, condition) => {
-    const getCatalogueSection = document.querySelector('#catalogue');
-    for (const i of films) {
-      fetch(`https://www.omdbapi.com/?t=${i.title}&apikey=ce12da02`)
-        .then((response) => response.json())
-        .then((json) => {
-          if (json[type] === condition) {
-            getCatalogueSection.innerHTML = '';
-            getCatalogueSection.appendChild(printFilms(json));
-            printFilms(json);
-          }
-        });
-    }
+  function printFilmsWithAllFilters() {
+      const catalogue = creatArrayCatalogue();
+      const filteredByCountry = filterData(catalogue, "Country", filterByCountry.value);
+      console.log(filteredByCountry)
+      // const filteredByYear = filterData(filteredByCountry, "Year", filterByYear.value);
+      // const filteredByRuntime = filterData(filteredByYear, "Runtime", filterByRunTime.value);
+      // const filteredByimdbRating = filterData(filteredByRuntime, "imdbRating", filterByImdb.value);
+
+      // let resultAllFilters = filteredByimdbRating;
+
+      // printFilms(resultAllFilters);
+
+      //mandar printar, juntar com o sort, resolver por gênero
+  }
+
+  const filterData = (dataBase, type, condition) => {
+    console.log(dataBase)
+    console.log(type)
+    console.log(condition)
+    const filterResult = dataBase.filter((item) => item[type] === condition);
+    return filterResult;
   };
 
+  // const filterData = (type, condition) => {
+  //   const getCatalogueSection = document.querySelector('#catalogue');
+  //   for (const i of films) {
+  //     fetch(`https://www.omdbapi.com/?t=${i.title}&apikey=ce12da02`)
+  //       .then((response) => response.json())
+  //       .then((json) => {
+  //         if (json[type] === condition) {
+  //           getCatalogueSection.innerHTML = '';
+  //           getCatalogueSection.appendChild(printFilms(json));
+  //           printFilms(json);
+  //         }
+  //       });
+  //   }
+  // };
+
   return filterContent;
-};
+}
+
+const getCatalogue = async () => {
+  for (const item of films) {
+    await fetch(`https://www.omdbapi.com/?t=${item.title}&apikey=ce12da02`)
+      .then((response) => response.json())
+      .then((json) => {
+        creatArrayCatalogue(json);
+      });
+  }
+}
+getCatalogue();
+
+const creatArrayCatalogue = (json) => {
+  const database = [];
+  database.push(json);
+  return database;
+}
+
+// const sortByMostRecent = async () => {
+//   const dataMovie = [];
+//   for (const item of films) {
+//     await fetch(`https://www.omdbapi.com/?t=${item.title}&apikey=ce12da02`)
+//       .then((response) => response.json())
+//       .then((json) => {
+//         dataMovie.push(json);
+//       });
+//   }
+//   dataMovie.sort((a, b) => {
+//     if (+a.Year < +b.Year) return 1;
+//     if (+a.Year > +b.Year) return -1;
+//     return 0;
+//   });
+// };
+// sortByMostRecent();
+
+// const sortByHighestScoreImdb = async () => {
+//   const dataMovie = [];
+//   for (const item of films) {
+//     await fetch(`https://www.omdbapi.com/?t=${item.title}&apikey=ce12da02`)
+//       .then((response) => response.json())
+//       .then((json) => {
+//         dataMovie.push(json);
+//       });
+//   }
+//   dataMovie.sort((a, b) => {
+//     if (+a.imdbRating < +b.imdbRating) return 1;
+//     if (+a.imdbRating > +b.imdbRating) return -1;
+//     return 0;
+//   });
+// };
+
+// sortByHighestScoreImdb();

@@ -94,7 +94,6 @@ export const printFilms = (json) => {
 };
 
 function showDetailsContainer(e, json) {
-
   const idFilmCard = e.target.parentNode.parentNode;
   const idNumber = idFilmCard.dataset.id;
   const getDetailsBox = document.getElementById('movies-details-info');
@@ -168,55 +167,3 @@ function showDetailsContainer(e, json) {
     getDetailsBox.innerHTML = ""
   });
 }
-
-const sortByMostRecent = async () => {
-  const dataMovie = [];
-  for (const item of films) {
-    await fetch(`https://www.omdbapi.com/?t=${item.title}&apikey=ce12da02`)
-      .then((response) => response.json())
-      .then((json) => {
-        dataMovie.push(json);
-      });
-  }
-  dataMovie.sort((a, b) => {
-    if (+a.Year < +b.Year) return 1;
-    if (+a.Year > +b.Year) return -1;
-    return 0;
-  });
-};
-sortByMostRecent();
-
-const sortByHighestScoreImdb = async () => {
-  const dataMovie = [];
-  for (const item of films) {
-    await fetch(`https://www.omdbapi.com/?t=${item.title}&apikey=ce12da02`)
-      .then((response) => response.json())
-      .then((json) => {
-        dataMovie.push(json);
-      });
-  }
-  dataMovie.sort((a, b) => {
-    if (+a.imdbRating < +b.imdbRating) return 1;
-    if (+a.imdbRating > +b.imdbRating) return -1;
-    return 0;
-  });
-};
-
-sortByHighestScoreImdb();
-
-/*
-function imdbFilms(i) {
-  fetch(`http://www.omdbapi.com/?t=${i.title}&apikey=ce12da02`)
-    .then((response) => response.json())
-    .then((json) => {
-      if (json.imdbRating > 7.5) {
-        document.querySelector('.films-container').innerHTML += `
-          <section data-id="${json.imdbID}" class="movie-box">
-            <p class="title">${json.Title}</p>
-            <img class="image" src="${json.Poster}">
-            <button id="info-${json.imdbID}" class="info">info</button>
-          </section>
-        <section id="info-details${json.imdbID}"></section>`;
-      }
-*/
-
