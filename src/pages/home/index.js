@@ -1,6 +1,3 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-console */
 import { films } from './mock.js';
 import { createMenu } from '../../components/menu/index.js';
 import { header } from '../../components/header/index.js';
@@ -44,7 +41,6 @@ export const Home = () => {
 `;
 
   const getAllFilms = () => {
-    // eslint-disable-next-line no-restricted-syntax
     for (const i of films) {
       getFilms(i);
     }
@@ -65,11 +61,13 @@ export const Home = () => {
 
   return rootElement;
 };
+
 export const showSerchResult = (section) => {
   const getCatalogueSection = section;
   return getCatalogueSection;
 
 };
+
 export const printFilms = (json) => {
   const filmsContainer = document.createElement('section');
   filmsContainer.classList.add('films-container');

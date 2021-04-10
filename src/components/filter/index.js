@@ -21,7 +21,7 @@ export const createMenuFilter = () => {
     <p> Filters: </p>
       <div class="filter-list">
         <select class="select-genre" id="genre">
-            <option class="select-genre" value="genre" selected="disabled">Genre</option>
+            <option class="select-genre" selected="disabled">Genre</option>
             <option class="select-genre" value="sci-fi">Sci-Fi</option>
             <option class="select-genre" value="drama">Drama</option>
             <option class="select-genre" value="comedy">Comedy</option>
@@ -34,7 +34,7 @@ export const createMenuFilter = () => {
 
       <div class="country-list">
       <select class="select-country" id="country">
-          <option class="select-country" value="country" selected="disabled">Nationalities</option>
+          <option class="select-country" selected="disabled">Nationalities</option>
           <option class="select-country" value="Australia">Australia</option>
           <option class="select-country" value="Brazil">Brazil</option>
           <option class="select-country" value="Brazil, France">Brazil, France</option>
@@ -69,19 +69,18 @@ export const createMenuFilter = () => {
       </div>
 
       <div class="year-movie">
-        <input type="range" min="1900" max="2021"  step="1" id="Year">
+        <input type="range" min="1900" max="2021"  step="1" id="year">
         <label for="year"> Year: <span class="filter-subtitle"> 1900 - 2021 </span></label>
         <p id="year-area"></p>
       </div>
           
       <div class="time">
-        <input type="range" min="1" max="40" id="Runtime">
+        <input type="range" min="1" max="40" id="runtime">
         <label for="runtime"> Runtime: <span class="filter-subtitle">0 - 40 minutes </span> </label>
         <p id="time-area"></p>
       </div>
       
-      <button class="clear" type="button" id="btn-clear" value="Clear">Clear</button>
-      <button class="filter-btn" type="button" id="btn-filter" value="Filter">Filter</button>
+      <button class="clear" type="button" id="btn-clear">Clear</button>
     `;
 
   const filterByCountry = filterContent.querySelector('#country');
@@ -89,12 +88,12 @@ export const createMenuFilter = () => {
     printFilmsWithAllFilters();
   });
 
-  const filterByYear = filterContent.querySelector('#Year');
+  const filterByYear = filterContent.querySelector('#year');
   filterByYear.addEventListener('change', () => {
     printFilmsWithAllFilters();
   });
 
-  const filterByRunTime = filterContent.querySelector('#Runtime');
+  const filterByRunTime = filterContent.querySelector('#runtime');
   filterByRunTime.addEventListener('change', () => {
     printFilmsWithAllFilters();
   });
@@ -104,52 +103,35 @@ export const createMenuFilter = () => {
     printFilmsWithAllFilters();
   });
 
-  // // const filterByGenre = filterContent.querySelector('#genre');
-  // // filterByGenre.addEventListener('change', () => {
-  // //   document.querySelector('#catalogue').innerHTML = ' ';
-  // //   for (const i of films) {
-  // //     if (filterByGenre.value === i.genre) {
-  // //         getFilms(i);
-  // //     }
-  // //   }
-  // // });
+  const filterByGenre = filterContent.querySelector('#genre');
+  filterByGenre.addEventListener('change', () => {
+    console.log(filterByGenre.value);
+    printFilmsWithAllFilters();
+  });
 
   function printFilmsWithAllFilters() {
-      const catalogue = catalogueArray;
-      const filteredByCountry = filterData(catalogue, "Country", filterByCountry.value);
-      const filteredByYear = filterData(filteredByCountry, "Year", filterByYear.value);
-      const filteredByRuntime = filterData(filteredByYear, "Runtime", filterByRunTime.value);
-      const filteredByimdbRating = filterData(filteredByRuntime, "imdbRating", filterByImdb.value);
+    const catalogue = catalogueArray;
+    const filteredByCountry = filterData(catalogue, "Country", filterByCountry.value);
+    const filteredByYear = filterData(filteredByCountry, "Year", filterByYear.value);
+    const filteredByRuntime = filterData(filteredByYear, "Runtime", filterByRunTime.value);
+    const filteredByimdbRating = filterData(filteredByRuntime, "imdbRating", filterByImdb.value);
+    // const filterByGenre = filterData(filteredByimdbRating, "Genre", filterByGenre.value);
 
-      let resultAllFilters = filteredByimdbRating;
-
-      printFilms(resultAllFilters);
-
-      //mandar printar, juntar com o sort, resolver por gênero
+    // let resultAllFilters = filterByGenre;
+    // let resultAllFilters = filteredByimdbRating;
+    console.log(filteredByimdbRating)
+    printFilms(filteredByCountry); //não funciona
+    //sort e botão de limpar
   }
-
-  const filterData = (dataBase, type, condition) => {
-    const filterResult = dataBase.filter((item) => item[type] === condition);
-    return filterResult;
-  };
-
-  // const filterData = (type, condition) => {
-  //   const getCatalogueSection = document.querySelector('#catalogue');
-  //   for (const i of films) {
-  //     fetch(`https://www.omdbapi.com/?t=${i.title}&apikey=ce12da02`)
-  //       .then((response) => response.json())
-  //       .then((json) => {
-  //         if (json[type] === condition) {
-  //           getCatalogueSection.innerHTML = '';
-  //           getCatalogueSection.appendChild(printFilms(json));
-  //           printFilms(json);
-  //         }
-  //       });
-  //   }
-  // };
 
   return filterContent;
 }
+
+const filterData = (dataBase, type, condition) => {
+  if(!condition) return dataBase;
+  const filterResult = dataBase.filter((item) => item[type] === condition);
+  return filterResult;
+};
 
 // const sortByMostRecent = async () => {
 //   const dataMovie = [];
@@ -185,3 +167,7 @@ export const createMenuFilter = () => {
 // };
 
 // sortByHighestScoreImdb();
+
+// if (selectCp != undefined && selectCp != null) {
+//   result = sortPokemonCp(selectCp, result)
+// }
